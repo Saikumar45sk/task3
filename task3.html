@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Quiz & API Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    header {
+      text-align: center;
+      background-color: #333;
+      color: white;
+      padding: 15px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #333;
+    }
+    .quiz-question {
+      margin-bottom: 15px;
+    }
+    .quiz-question input {
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #joke {
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      h1, h2 {
+        font-size: 22px;
+      }
+      button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1, h2 {
+        font-size: 18px;
+      }
+      .container {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Interactive Quiz + Joke API + Responsive Layout</h1>
+  </header>
+
+  <div class="container">
+
+    <!-- Quiz Section -->
+    <h2>Mini Quiz</h2>
+    <div id="quiz">
+      <div class="quiz-question">
+        <p>1. What is the capital of France?</p>
+        <input type="radio" name="q1" value="Paris"> Paris<br>
+        <input type="radio" name="q1" value="London"> London<br>
+        <input type="radio" name="q1" value="Rome"> Rome
+      </div>
+
+      <div class="quiz-question">
+        <p>2. Which language runs in a web browser?</p>
+        <input type="radio" name="q2" value="Python"> Python<br>
+        <input type="radio" name="q2" value="JavaScript"> JavaScript<br>
+        <input type="radio" name="q2" value="C++"> C++
+      </div>
+
+      <button onclick="checkAnswers()">Submit Quiz</button>
+      <p id="quiz-result"></p>
+    </div>
+
+    <hr>
+
+    <!-- Joke Section -->
+    <h2>Get a Random Joke</h2>
+    <button onclick="getJoke()">Show Joke</button>
+    <p id="joke">Click the button to fetch a joke!</p>
+
+  </div>
+
+  <script>
+    // Quiz Logic
+    function checkAnswers() {
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      let score = 0;
+
+      if (q1 && q1.value === "Paris") score++;
+      if (q2 && q2.value === "JavaScript") score++;
+
+      const result = document.getElementById("quiz-result");
+      result.textContent = `You scored ${score}/2 correct!`;
+    }
+
+    // Fetch Joke from API
+    function getJoke() {
+      fetch('https://icanhazdadjoke.com/', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("joke").textContent = data.joke;
+      })
+      .catch(err => {
+        document.getElementById("joke").textContent = "Failed to load joke.";
+      });
+    }
+  </script>
+
+</body>
+</html>
